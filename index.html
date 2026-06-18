@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Pemesanan Produk</title>
+    <title>Form Pemesanan Produk - Ashari Rendy</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,7 +16,7 @@
 
     <div class="container">
         <header>
-            <div class="logo">Selamat Datang</div>
+            <div class="logo">Ashari Rendy</div>
             <h1>Form Pemesanan Produk</h1>
         </header>
 
@@ -25,15 +25,12 @@
                 
                 <div class="card">
                     <div class="card-title">
-                        <i class="fa-solid fa-basket-shopping"></i> Detail Produk
+                        <i class="fa-solid fa-basket-shopping"></i> Data Produk Yang Dipesan
                     </div>
-                    <div class="product-info">
-                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600" alt="Produk" class="product-img">
-                        <div class="product-detail">
-                            <h2 id="prodName">Sepatu Sneakers Modern X-1</h2>
-                            <div class="product-price" id="prodPrice">Rp 299.000</div>
-                            <p class="product-desc">Sneakers kasual kualitas premium, sangat nyaman digunakan untuk harian, olahraga ringan, maupun kerja. Desain stylish dan anti-slip.</p>
-                        </div>
+                    <div class="form-group">
+                        <label for="namaProduk">Nama Produk *</label>
+                        <input type="text" id="namaProduk" placeholder="Contoh: Sepatu Sneakers Modern X-1">
+                        <div class="error-message">Nama produk wajib diisi sesuai barang yang Anda pesan.</div>
                     </div>
                 </div>
 
@@ -49,7 +46,7 @@
                     <div class="form-group row-grid">
                         <div>
                             <label for="whatsapp">Nomor WhatsApp *</label>
-                            <input type="number" id="whatsapp" placeholder="Contoh: 081234567890">
+                            <input type="number" id="whatsapp" placeholder="Contoh: 081556828324">
                             <div class="error-message">Nomor WhatsApp Indonesia tidak valid (minimal 10 digit, diawali 08/62).</div>
                         </div>
                         <div>
