@@ -1,10 +1,9 @@
 // =======================================================
 // CONFIGURATION INTEGRASI DATA
 // =======================================================
-const WA_ADMIN_NUMBER = "6281556828324"; // Nomor WA Admin Anda sudah aktif di sini
+const WA_ADMIN_NUMBER = "6281556828324"; // Nomor WA Admin Anda
 
 // Integrasi Akun EmailJS Anda
-// Silakan buat akun gratis di emailjs.com untuk mendapatkan kredensial di bawah ini
 (function() {
     emailjs.init("USER_PUBLIC_KEY_ANDA"); // Jalankan inisialisasi dengan Public Key Anda
 })();
@@ -140,6 +139,7 @@ form.addEventListener('submit', function(e) {
 
     // List Field yang Wajib Diisi (Mandatori)
     const reqInputs = [
+        { id: 'namaProduk' },
         { id: 'namaLengkap' },
         { id: 'provinsi' },
         { id: 'kabupaten' },
@@ -165,7 +165,7 @@ form.addEventListener('submit', function(e) {
         }
     });
 
-    // Validasi Pola WhatsApp Khusus Indonesia (08xxx / 628xxx) minimal 10 digit
+    // Validasi Pola WhatsApp Indonesia (08xxx / 628xxx) minimal 10 digit
     const waInput = document.getElementById('whatsapp');
     const waErr = waInput.nextElementSibling;
     const waRegex = /^(08|628)[0-9]{8,11}$/;
@@ -178,7 +178,7 @@ form.addEventListener('submit', function(e) {
         waErr.style.display = 'none';
     }
 
-    // Validasi Format Email Opsional (Hanya divalidasi jika diisi oleh pembeli)
+    // Validasi Format Email Opsional
     const emailInput = document.getElementById('email');
     const emailErr = emailInput.nextElementSibling;
     if (emailInput.value.trim() !== "") {
@@ -206,11 +206,10 @@ form.addEventListener('submit', function(e) {
         agreeErr.style.display = 'none';
     }
 
-    // Jika seluruh sistem validasi lolos, kirim data ke sistem pusat
+    // Jika seluruh sistem validasi lolos, kirim data
     if (isValid) {
         kirimData();
     } else {
-        // Efek Fokus Otomatis Bergulir ke bagian form yang error pertama kali
         const firstError = document.querySelector('.error, #agreeError[style*="display: block"]');
         if (firstError) {
             firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -225,25 +224,21 @@ function kirimData() {
     const btnKirim = document.getElementById('btnKirim');
     const btnText = document.getElementById('btnText');
     
-    // Aktifkan animasi loading pada tombol submit
     btnKirim.disabled = true;
     btnText.innerHTML = `<i class="fa-solid fa-spinner spinner"></i> Memproses Pesanan...`;
 
-    // Ambil nilai teks murni dari dropdown wilayah yang sedang terpilih
     const provText = selectProv.options[selectProv.selectedIndex].text;
     const kabText = selectKab.options[selectKab.selectedIndex].text;
     const kecText = selectKec.options[selectKec.selectedIndex].text;
     const kelText = selectKel.options[selectKel.selectedIndex].text;
     
-    // Format Waktu Berdasarkan Waktu Lokal Sistem Pengguna
     const opsiTanggal = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' };
     const tanggalSekarang = new Date().toLocaleDateString('id-ID', opsiTanggal);
 
-    // Kumpulan Parameter Objek yang akan dilempar ke EmailJS
     const templateParams = {
         nama: document.getElementById('namaLengkap').value,
         wa: document.getElementById('whatsapp').value,
-        produk: document.getElementById('prodName').innerText,
+        produk: document.getElementById('namaProduk').value, // Mengambil dari input dinamis teks
         jumlah: document.getElementById('jumlahPesanan').value,
         kurir: document.getElementById('kurir').value,
         provinsi: provText,
@@ -255,7 +250,7 @@ function kirimData() {
         patokan: document.getElementById('patokan').value || '-',
         catatan: document.getElementById('catatan').value || '-',
         tanggal: tanggalSekarang
-            };
+    };
 
     // Eksekusi API EmailJS untuk Mengirim Email ke Admin
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
@@ -264,7 +259,6 @@ function kirimData() {
             tampilkanHalamanSukses(templateParams);
         }, function(error) {
             console.error('GAGAL MENGIRIM EMAIL...', error);
-            // Tetap diarahkan ke halaman sukses agar pengalaman pengguna (UX) pembeli tidak terganggu masalah konfigurasi
             tampilkanHalamanSukses(templateParams);
         });
 }
@@ -272,12 +266,10 @@ function kirimData() {
 // --- 4. TAMPILKAN HALAMAN SUKSES & GENERATE ACTION BUTTON WA ---
 
 function tampilkanHalamanSukses(data) {
-    // Navigasi SPA murni (Sembunyikan Halaman Form Checkout, Munculkan Layar Sukses)
     document.getElementById('checkoutPage').classList.remove('active');
     document.getElementById('successPage').classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Format Teks String Sesuai Kebutuhan Order Baru untuk Dikirim Melalui WhatsApp API
     const teksWa = `ORDER BARU\n\n` +
                    `Nama : ${data.nama}\n` +
                    `WA : ${data.wa}\n\n` +
@@ -294,7 +286,6 @@ function tampilkanHalamanSukses(data) {
                    `Catatan :\n${data.catatan}\n\n` +
                    `Tanggal : ${data.tanggal}`;
 
-    // Menghubungkan Tautan API WhatsApp pada Tombol Hubungi WhatsApp Admin di Layar Akhir
     const linkWaAdmin = `https://api.whatsapp.com/send?phone=${WA_ADMIN_NUMBER}&text=${encodeURIComponent(teksWa)}`;
     document.getElementById('btnWaAdmin').href = linkWaAdmin;
 }
