@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pemesanan Produk</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">Selamat Datang</div>
+            <h1>Form Pemesanan Produk</h1>
+        </header>
+
+        <div id="checkoutPage" class="page active">
+            <form id="orderForm" novalidate>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-basket-shopping"></i> Detail Produk
+                    </div>
+                    <div class="product-info">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600" alt="Produk" class="product-img">
+                        <div class="product-detail">
+                            <h2 id="prodName">Sepatu Sneakers Modern X-1</h2>
+                            <div class="product-price" id="prodPrice">Rp 299.000</div>
+                            <p class="product-desc">Sneakers kasual kualitas premium, sangat nyaman digunakan untuk harian, olahraga ringan, maupun kerja. Desain stylish dan anti-slip.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-user"></i> Data Pembeli
+                    </div>
+                    <div class="form-group">
+                        <label for="namaLengkap">Nama Lengkap *</label>
+                        <input type="text" id="namaLengkap" placeholder="Masukkan nama lengkap Anda">
+                        <div class="error-message">Nama lengkap wajib diisi.</div>
+                    </div>
+                    <div class="form-group row-grid">
+                        <div>
+                            <label for="whatsapp">Nomor WhatsApp *</label>
+                            <input type="number" id="whatsapp" placeholder="Contoh: 081234567890">
+                            <div class="error-message">Nomor WhatsApp Indonesia tidak valid (minimal 10 digit, diawali 08/62).</div>
+                        </div>
+                        <div>
+                            <label for="email">Email <span class="optional">(Opsional)</span></label>
+                            <input type="email" id="email" placeholder="alamat@email.com">
+                            <div class="error-message">Format email tidak valid.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-truck-ramp-box"></i> Alamat Pengiriman
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="provinsi">Provinsi *</label>
+                        <select id="provinsi">
+                            <option value="">-- Pilih Provinsi --</option>
+                        </select>
+                        <div class="loading-field" id="loadProv"><i class="fa-solid fa-spinner spinner"></i></div>
+                        <div class="error-message">Silakan pilih provinsi.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kabupaten">Kabupaten / Kota *</label>
+                        <select id="kabupaten" disabled>
+                            <option value="">-- Pilih Kabupaten/Kota --</option>
+                        </select>
+                        <div class="loading-field" id="loadKab"><i class="fa-solid fa-spinner spinner"></i></div>
+                        <div class="error-message">Silakan pilih kabupaten/kota.</div>
+                    </div>
+
+                    <div class="form-group row-grid">
+                        <div>
+                            <label for="kecamatan">Kecamatan *</label>
+                            <select id="kecamatan" disabled>
+                                <option value="">-- Pilih Kecamatan --</option>
+                            </select>
+                            <div class="loading-field" id="loadKec"><i class="fa-solid fa-spinner spinner"></i></div>
+                            <div class="error-message">Silakan pilih kecamatan.</div>
+                        </div>
+                        <div>
+                            <label for="kelurahan">Desa / Kelurahan *</label>
+                            <select id="kelurahan" disabled>
+                                <option value="">-- Pilih Desa/Kelurahan --</option>
+                            </select>
+                            <div class="loading-field" id="loadKel"><i class="fa-solid fa-spinner spinner"></i></div>
+                            <div class="error-message">Silakan pilih desa/kelurahan.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row-grid">
+                        <div>
+                            <label for="kodePos">Kode Pos *</label>
+                            <input type="number" id="kodePos" placeholder="Contoh: 12345">
+                            <div class="error-message">Kode pos wajib diisi (angka).</div>
+                        </div>
+                        <div>
+                            <label for="patokan">Patokan Rumah <span class="optional">(Opsional)</span></label>
+                            <input type="text" id="patokan" placeholder="Contoh: Depan Masjid Al-Ikhlas">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alamatLengkap">Alamat Lengkap *</label>
+                        <textarea id="alamatLengkap" rows="3" placeholder="Nama jalan, RT/RW, nomor rumah, blok..."></textarea>
+                        <div class="error-message">Alamat lengkap mohon diisi secara detail.</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-receipt"></i> Data Pesanan & Pengiriman
+                    </div>
+                    
+                    <div class="form-group row-grid">
+                        <div>
+                            <label for="jumlahPesanan">Jumlah Pesanan *</label>
+                            <input type="number" id="jumlahPesanan" value="1" min="1">
+                            <div class="error-message">Jumlah minimal 1.</div>
+                        </div>
+                        <div>
+                            <label for="kurir">Pilihan Kurir *</label>
+                            <select id="kurir">
+                                <option value="">-- Pilih Kurir --</option>
+                                <option value="J&T Express">J&T Express</option>
+                                <option value="JNE">JNE</option>
+                                <option value="Ninja Xpress">Ninja Xpress</option>
+                                <option value="Pos Indonesia">Pos Indonesia</option>
+                            </select>
+                            <div class="error-message">Silakan tentukan ekspedisi kurir.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="catatan">Catatan Pembeli <span class="optional">(Opsional)</span></label>
+                        <textarea id="catatan" rows="2" placeholder="Contoh: Ukuran 42, Warna Hitam"></textarea>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="persetujuan">
+                        <label for="persetujuan">Saya menyatakan data alamat yang saya isi benar. *</label>
+                    </div>
+                    <div class="error-message" id="agreeError" style="margin-top:4px;">Anda harus menyetujui pernyataan ini untuk melanjutkan.</div>
+                </div>
+
+                <button type="submit" class="btn" id="btnKirim">
+                    <span id="btnText"><i class="fa-solid fa-paper-plane"></i> Kirim Pesanan Sekarang</span>
+                </button>
+            </form>
+        </div>
+
+        <div id="successPage" class="page">
+            <div class="card success-card">
+                <div class="success-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2>Pesanan Berhasil Dikirim!</h2>
+                <p>Terima kasih telah berbelanja. Admin akan segera menghubungi Anda melalui WhatsApp untuk proses konfirmasi.</p>
+                
+                <div class="success-actions">
+                    <a href="#" id="btnWaAdmin" target="_blank" class="btn btn-wa">
+                        <i class="fa-brands fa-whatsapp"></i> Hubungi WhatsApp Admin
+                    </a>
+                    <button onclick="window.location.reload();" class="btn btn-outline">
+                        <i class="fa-solid fa-house"></i> Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
